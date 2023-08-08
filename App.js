@@ -7,7 +7,7 @@ const heading = [React.createElement(
          "hello siddharth"),
          React.createElement(
             "h1",
-             {id: "heading"} , 
+             {id: "heading"} ,  
              "hello heading2"),
         ]),
         React.createElement(
