@@ -1,34 +1,43 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./Header.js";
-import RestaurantCard from "./RestaurantCard.js";
-import { HotelJSON } from "./Restaurant.Constants.js";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
+import Contact from "./Contact.js"
+import Error from "./Error.js";
+import Body from "./Body.js";
+import AboutUs from "./AboutUs.js";
 
 const App = () => {
-   const [searchText, setSearchText] = useState("");
-   const [listOfRestaurants, setlistOfRestaurants] = useState(HotelJSON);
    return (
       <div>
          <Header />
-         <div className="searchInput">
-            <input onChange={(e) => setSearchText(e.target.value)} type="text" value={searchText} placeholder="Search Restaurants...."></input>
-            <button onClick={() => {
-               const filteredList = listOfRestaurants.filter(res => res?.data?.data?.name.toLowerCase().includes(searchText));
-               if(searchText.length>0){
-               setlistOfRestaurants(filteredList)
-               }else setlistOfRestaurants(HotelJSON);
-            }}>Search</button>
-         </div>
-         <div className="restaurant-cards">
-            {
-               listOfRestaurants.map(resData => (
-                  <RestaurantCard key={resData?.data?.data?.id} resObj={resData} />
-               ))
-            }
-         </div>
+         <Outlet />
       </div>
    );
 };
+
+const AppRoutes = createBrowserRouter([
+   {
+      path: "/",
+      element: <App />,
+      children: [
+         {
+            path: "/",
+            element: <Body />
+         },
+         {
+            path: "/about",
+            element: <AboutUs />
+         },
+         {
+            path: "/contact",
+            element: <Contact />
+         }
+      ],
+      errorElement: <Error />
+   },
+])
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(<App />);
+root.render(<RouterProvider router={AppRoutes} />);

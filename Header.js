@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
     const[signinButton,setSigninButton] = useState("Sign-In")
@@ -9,9 +10,9 @@ const Header = () => {
             </div>
             <div>
                 <ul className="header-list">
-                    <li>Home</li>
-                    <li>About Us</li>
-                    <li>Contact</li>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/about">About Us</Link></li>
+                    <li><Link to="/contact">Contact</Link></li>
                     <button onClick={()=>{
                         signinButton==="Sign-Out"?setSigninButton("Sign-In"):setSigninButton("Sign-Out")
                     }}>{signinButton}</button>
