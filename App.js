@@ -1,44 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
-// const heading = [React.createElement(
-//    "div",
-//    { id: "parent-header" },
-//    [React.createElement(
-//       "h1",
-//       { id: "heading" },
-//       "hello siddharth"),
-//    React.createElement(
-//       "h1",
-//       { id: "heading" },
-//       "hello heading2"),
-//    ]),
-// React.createElement(
-//    "div",
-//    { id: "child-header" },
-//    [React.createElement(
-//       "h1",
-//       { id: "heading" },
-//       "hello siddharth"),
-//    React.createElement(
-//       "h1",
-//       { id: "heading" },
-//       "hello heading2"),
-//    ]),
-// ];
-// const root = ReactDOM.createRoot(document.getElementById("root"));
-// root.render(heading);
+import Header from "./Header.js";
+import RestaurantCard from "./RestaurantCard.js";
+import { HotelJSON } from "./Restaurant.Constants.js";
 
-const Header = () =>  <h1 className="header">hello world</h1>
-
-const number = [1000,100,200,300]
-
-const Heading2 = () => (
-   <div>
-      <Header />
-      {(number).map(n=> (n / 100)).join(',')}
-      <h2 style={{color: "red"}}>hello see up</h2>
-   </div>
-);
+const App = () => {
+   const [searchText, setSearchText] = useState("");
+   const [listOfRestaurants, setlistOfRestaurants] = useState(HotelJSON);
+   return (
+      <div>
+         <Header />
+         <div className="searchInput">
+            <input onChange={(e) => setSearchText(e.target.value)} type="text" value={searchText} placeholder="Search Restaurants...."></input>
+            <button onClick={() => {
+               const filteredList = listOfRestaurants.filter(res => res?.data?.data?.name.toLowerCase().includes(searchText));
+               if(searchText.length>0){
+               setlistOfRestaurants(filteredList)
+               }else setlistOfRestaurants(HotelJSON);
+            }}>Search</button>
+         </div>
+         <div className="restaurant-cards">
+            {
+               listOfRestaurants.map(resData => (
+                  <RestaurantCard key={resData?.data?.data?.id} resObj={resData} />
+               ))
+            }
+         </div>
+      </div>
+   );
+};
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(<Heading2 />);
+root.render(<App />);
